@@ -1,11 +1,19 @@
 const pokemonList = document.querySelector("#pokemon-list");
 let URL = "https://pokeapi.co/api/v2/pokemon/";
 
-for (let i = 1; i <= 151; i++) {
-    fetch(URL + i)
-        .then((response) => response.json())
-        .then(data => showPokemon(data))
+const fetchPromises = [];
+
+for (let i = 1; i <= 251; i++) {
+    fetchPromises.push(fetch(URL + i).then((response) => response.json()));
 }
+
+Promise.all(fetchPromises)
+    .then((pokemons) => {
+        pokemons.forEach((poke) => showPokemon(poke));
+    })
+    .catch((error) => {
+        console.error("Error al cargar los Pokémon: ", error);
+    });
 
 function showPokemon(poke) {
     let types = poke.types.map(type => `<p class="${type.type.name} type">${type.type.name}</p>`);
@@ -15,7 +23,7 @@ function showPokemon(poke) {
     if (pokeId.length === 1) {
         pokeId = "00" + pokeId;
     } else if (pokeId.length === 2) {
-        pokeId = "0" + pokeId;
+        pokeId = "00" + pokeId;
     }
 
     const div = document.createElement("div");
