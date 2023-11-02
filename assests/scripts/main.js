@@ -83,4 +83,4 @@ function initializeFilterButtons(pokemonData) {
 }
 
 // Llama a la función para cargar todos los Pokémon
-loadAllPokemon(251);
+loadAllPokemon(807);
